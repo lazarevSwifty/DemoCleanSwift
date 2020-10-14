@@ -40,13 +40,10 @@ class DetailViewController: UIViewController, DetailDisplayLogic {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getUser()
-    }
-    
-    func getUser() {
         let request = Detail.getDetail.Request()
         interactor?.getUser(request: request)
     }
+
     
     func displayDetail(viewModel: Detail.getDetail.ViewModel) {
         let displayedUser = viewModel.displayedUser
