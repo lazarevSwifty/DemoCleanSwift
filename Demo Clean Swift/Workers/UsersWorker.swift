@@ -8,7 +8,11 @@
 
 import Foundation
 
-class UsersWorker {
+protocol UsersWorkerProtocol {
+    func fetchUsers(completionHandler: @escaping ([User]) -> Void)
+}
+
+class UsersWorker: UsersWorkerProtocol {
     
     func fetchUsers(completionHandler: @escaping ([User]) -> Void) {
         

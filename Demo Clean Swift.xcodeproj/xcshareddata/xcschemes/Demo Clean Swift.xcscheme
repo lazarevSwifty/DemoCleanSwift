@@ -28,6 +28,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E07EF78D2539A46D008D9169"
+               BuildableName = "Demo Clean SwiftTests.xctest"
+               BlueprintName = "Demo Clean SwiftTests"
+               ReferencedContainer = "container:Demo Clean Swift.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

@@ -21,7 +21,7 @@ class UsersInteractor: UsersBusinessLogic, UsersDataStore {
     var users: [User]?
     
     var presenter: UsersPresentationLogic?
-    var worker = UsersWorker()
+    var worker: UsersWorkerProtocol = UsersWorker()
     
     func fetchUsers(request: Users.FetchUsers.Request) {
         worker.fetchUsers(completionHandler: { users in
