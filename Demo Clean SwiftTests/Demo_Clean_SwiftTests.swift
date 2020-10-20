@@ -73,7 +73,7 @@ class WorkerTests: XCTestCase {
 }
 
 class UserViewControllerStub: UITableViewController, UsersDisplayLogic {
-    var displayedViewModel: Users.FetchUsers.ViewModel?
+    var displayedViewModel: Users.FetchUsers.ViewModel? = nil
     
     func displayFetchedUsers(viewModel: Users.FetchUsers.ViewModel) {
         displayedViewModel = viewModel
@@ -83,17 +83,31 @@ class UserViewControllerStub: UITableViewController, UsersDisplayLogic {
 class UserPresenterTest: XCTestCase {
     func test_presentFetchedUsers_shouldReturnConcatNameAndLastName() {
         let users: [User] = [
-            User(name: "Владислав", lastName: "Лазарев"),
-            User(name: "Иван", lastName: "Петров"),
-            User(name: "Максим", lastName: "Михеев"),
+            User(name: "Владислав", lastName: "Лазарев")
         ]
         
         let resultViewModel = Users.FetchUsers.ViewModel(displayedUsers:
             [
-                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Лазарев Владислав"),
-                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Петров Иван"),
-                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Михеев Максим")
+                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Лазарев Владислав")
         ])
+        
+        let response = Users.FetchUsers.Response(users: users)
+
+        
+        let presenter = UsersPresenter()
+        let viewController = UserViewControllerStub()
+        presenter.viewController = viewController
+        
+        presenter.presentFetchedUsers(response: response)
+        
+        let displayedViewModel = viewController.displayedViewModel
+        XCTAssertEqual(resultViewModel, displayedViewModel)
+    }
+    
+    func test_presentFetchedUsers_shouldReturnEmptyViewModel_whenZeroUsersAccepted() {
+        let users: [User] = []
+        
+        let resultViewModel = Users.FetchUsers.ViewModel(displayedUsers: [])
         
         let response = Users.FetchUsers.Response(users: users)
 
