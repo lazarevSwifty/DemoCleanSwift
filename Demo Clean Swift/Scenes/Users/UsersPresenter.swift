@@ -8,6 +8,8 @@
 
 import Foundation
 
+typealias UsersViewModel = Users.FetchUsers.ViewModel
+
 protocol UsersPresentationLogic {
     func presentFetchedUsers(response: Users.FetchUsers.Response)
 }
@@ -16,15 +18,26 @@ class UsersPresenter: UsersPresentationLogic {
     var viewController: UsersDisplayLogic?
     
     func presentFetchedUsers(response: Users.FetchUsers.Response) {
-        var displayedUsers: [Users.FetchUsers.ViewModel.DisplayedUsers] = []
         
-        for user in response.users {
-            let fullName = user.lastName + " " + user.name
-            let displayedUser = Users.FetchUsers.ViewModel.DisplayedUsers(fullName: fullName)
-            displayedUsers.append(displayedUser)
-        }
+        let displayedUsers = formattingUsers(users: response.users)
         
         let viewModel = Users.FetchUsers.ViewModel(displayedUsers: displayedUsers)
         viewController?.displayFetchedUsers(viewModel: viewModel)
+    }
+    
+    func formattingUsers(users: [User]) -> [UsersViewModel.DisplayedUsers] {
+        var displayedUsers: [UsersViewModel.DisplayedUsers] = []
+
+        for user in users {
+            let fullName = formattingUserFullName(name: user.name, lastName: user.lastName)
+            let displayedUser = UsersViewModel.DisplayedUsers(fullName: fullName)
+            displayedUsers.append(displayedUser)
+        }
+        
+        return displayedUsers
+    }
+    
+    private func formattingUserFullName(name: String, lastName: String) -> String {
+        return lastName + " " + name
     }
 }

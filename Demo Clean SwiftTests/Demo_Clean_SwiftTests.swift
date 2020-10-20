@@ -88,16 +88,17 @@ class UserViewControllerStub: UITableViewController, UsersDisplayLogic {
 
 class UserPresenterTest: XCTestCase {
     func test_presentFetchedUsers_shouldReturnConcatNameAndLastName() {
-        let displayedUsers: [Users.FetchUsers.ViewModel.DisplayedUsers] = [
-            Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Лазарев Владислав"),
-            Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Петров Иван"),
-            Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Михеев Максим")
+        let users: [User] = [
+            User(name: "Владислав", lastName: "Лазарев"),
+            User(name: "Иван", lastName: "Петров"),
+            User(name: "Максим", lastName: "Михеев"),
         ]
         
         
         let presenter = UsersPresenter()
         presenter.viewController = UserViewControllerStub()
         
+        let displayedUsers = presenter.formattingUsers(users: users)
         
         let viewModel = Users.FetchUsers.ViewModel(displayedUsers:  displayedUsers)
         presenter.viewController?.displayFetchedUsers(viewModel: viewModel)
