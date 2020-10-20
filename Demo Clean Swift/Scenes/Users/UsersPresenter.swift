@@ -25,7 +25,7 @@ class UsersPresenter: UsersPresentationLogic {
         viewController?.displayFetchedUsers(viewModel: viewModel)
     }
     
-    func formattingUsers(users: [User]) -> [UsersViewModel.DisplayedUsers] {
+    private func formattingUsers(users: [User]) -> [UsersViewModel.DisplayedUsers] {
         var displayedUsers: [UsersViewModel.DisplayedUsers] = []
 
         for user in users {

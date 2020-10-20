@@ -73,16 +73,10 @@ class WorkerTests: XCTestCase {
 }
 
 class UserViewControllerStub: UITableViewController, UsersDisplayLogic {
+    var displayedViewModel: Users.FetchUsers.ViewModel?
+    
     func displayFetchedUsers(viewModel: Users.FetchUsers.ViewModel) {
-        let resultViewModel = Users.FetchUsers.ViewModel(displayedUsers:
-            [
-                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Лазарев Владислав"),
-                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Петров Иван"),
-                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Михеев Максим")
-        ])
-        
-        
-        XCTAssertEqual(viewModel, resultViewModel)
+        displayedViewModel = viewModel
     }
 }
 
@@ -94,13 +88,23 @@ class UserPresenterTest: XCTestCase {
             User(name: "Максим", lastName: "Михеев"),
         ]
         
+        let resultViewModel = Users.FetchUsers.ViewModel(displayedUsers:
+            [
+                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Лазарев Владислав"),
+                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Петров Иван"),
+                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Михеев Максим")
+        ])
+        
+        let response = Users.FetchUsers.Response(users: users)
+
         
         let presenter = UsersPresenter()
-        presenter.viewController = UserViewControllerStub()
+        let viewController = UserViewControllerStub()
+        presenter.viewController = viewController
         
-        let displayedUsers = presenter.formattingUsers(users: users)
+        presenter.presentFetchedUsers(response: response)
         
-        let viewModel = Users.FetchUsers.ViewModel(displayedUsers:  displayedUsers)
-        presenter.viewController?.displayFetchedUsers(viewModel: viewModel)
+        let displayedViewModel = viewController.displayedViewModel
+        XCTAssertEqual(resultViewModel, displayedViewModel)
     }
 }
