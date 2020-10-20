@@ -20,13 +20,17 @@ enum Users {
             var users: [User]
         }
         
-        struct ViewModel {
+        struct ViewModel: Equatable {
 
-            struct DisplayedUsers {
+            struct DisplayedUsers: Equatable {
                 let fullName: String
             }
             
             var displayedUsers: [DisplayedUsers]
+            
+            static func == (lhs: Users.FetchUsers.ViewModel, rhs: Users.FetchUsers.ViewModel) -> Bool {
+                lhs.displayedUsers == rhs.displayedUsers
+            }
         }
     }
 }

@@ -11,27 +11,27 @@ import XCTest
 @testable import Demo_Clean_Swift
 
 class Demo_Clean_SwiftTests: XCTestCase {
-
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-
+    
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
+    
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
-
+    
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
         measure {
             // Put the code you want to measure the time of here.
         }
     }
-
+    
 }
 
 struct WorkerStub: UsersWorkerProtocol {
@@ -58,16 +58,48 @@ class WorkerTests: XCTestCase {
             User(name: "Иван", lastName: "Петров"),
             User(name: "Максим", lastName: "Михеев"),
         ]
-        	
+        
         let completionExpectation = expectation(description: "The completion function must be invoked")
-
+        
         interactor.worker.fetchUsers(completionHandler: { fethedUsers in
             
             completionExpectation.fulfill()
-
+            
             XCTAssertEqual(fethedUsers, resultUser)
         })
         
         waitForExpectations(timeout: 1.0)
+    }
+}
+
+class UserViewControllerStub: UITableViewController, UsersDisplayLogic {
+    func displayFetchedUsers(viewModel: Users.FetchUsers.ViewModel) {
+        let resultViewModel = Users.FetchUsers.ViewModel(displayedUsers:
+            [
+                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Лазарев Владислав"),
+                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Петров Иван"),
+                Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Михеев Максим")
+        ])
+        
+        
+        XCTAssertEqual(viewModel, resultViewModel)
+    }
+}
+
+class UserPresenterTest: XCTestCase {
+    func test_presentFetchedUsers_shouldReturnConcatNameAndLastName() {
+        let displayedUsers: [Users.FetchUsers.ViewModel.DisplayedUsers] = [
+            Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Лазарев Владислав"),
+            Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Петров Иван"),
+            Users.FetchUsers.ViewModel.DisplayedUsers(fullName: "Михеев Максим")
+        ]
+        
+        
+        let presenter = UsersPresenter()
+        presenter.viewController = UserViewControllerStub()
+        
+        
+        let viewModel = Users.FetchUsers.ViewModel(displayedUsers:  displayedUsers)
+        presenter.viewController?.displayFetchedUsers(viewModel: viewModel)
     }
 }

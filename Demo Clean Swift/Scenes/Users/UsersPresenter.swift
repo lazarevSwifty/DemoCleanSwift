@@ -13,7 +13,7 @@ protocol UsersPresentationLogic {
 }
 
 class UsersPresenter: UsersPresentationLogic {
-    weak var viewController: UsersDisplayLogic?
+    var viewController: UsersDisplayLogic?
     
     func presentFetchedUsers(response: Users.FetchUsers.Response) {
         var displayedUsers: [Users.FetchUsers.ViewModel.DisplayedUsers] = []
